@@ -1,12 +1,35 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ImagePlusIcon, TrashIcon, PlusIcon } from 'lucide-react';
+import { DownloadIcon, ImagePlusIcon, TrashIcon, PlusIcon, UploadIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { PipelineFailure } from '@/components/pipeline-failure';
 import { apiJson, describeError } from '@/lib/api/client';
+import { saveLocalFile } from '@/lib/local-export';
+import { parsePronunciationImport } from '@/features/settings/parse-pronunciation-import';
 import { metadataFields, duplicateWords } from './book-options';
 import type { Draft } from './longform-session';
+
+function lexiconRows(entries: unknown[]): { word: string; pronunciation: string }[] {
+  const rows: { word: string; pronunciation: string }[] = [];
+  for (const row of entries) {
+    if (!row || typeof row !== 'object') throw new Error('invalid pronunciation import');
+    const entry = row as { term?: unknown; replacement?: unknown };
+    if (typeof entry.term !== 'string' || typeof entry.replacement !== 'string') {
+      throw new Error('invalid pronunciation import');
+    }
+    const word = entry.term.trim();
+    if (!word) continue;
+    const key = word.toLowerCase();
+    const next = { word, pronunciation: entry.replacement };
+    const index = rows.findIndex((item) => item.word.toLowerCase() === key);
+    if (index >= 0) rows[index] = next;
+    else rows.push(next);
+  }
+  if (rows.length === 0) throw new Error('invalid pronunciation import');
+  return rows;
+}
 export function BookSettings({
   draft,
   disabled,
@@ -22,9 +45,13 @@ export function BookSettings({
 }) {
   const { t } = useTranslation();
   const input = useRef<HTMLInputElement>(null);
+  const lexiconFile = useRef<HTMLInputElement>(null);
   const controller = useRef<AbortController | null>(null);
   const [preview, setPreview] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [replaceLexicon, setReplaceLexicon] = useState(false);
+  const [lexiconError, setLexiconError] = useState('');
+  const [lexiconNotice, setLexiconNotice] = useState('');
   useEffect(() => () => controller.current?.abort(), []);
   useEffect(
     () => () => {
@@ -142,6 +169,95 @@ export function BookSettings({
       {pronunciation && (
         <details className="space-y-3">
           <summary className="cursor-pointer text-sm font-medium">{t('audiobook.lexicon')}</summary>
+          <div className="flex items-center gap-2">
+            <Switch
+              id="audiobook-lexicon-replace"
+              checked={replaceLexicon}
+              disabled={disabled}
+              aria-label={t('pronunciation.import_replace')}
+              onCheckedChange={setReplaceLexicon}
+            />
+            <label htmlFor="audiobook-lexicon-replace" className="text-xs">
+              {t('pronunciation.import_replace')}
+            </label>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={disabled}
+              onClick={() => lexiconFile.current?.click()}
+            >
+              <UploadIcon />
+              {t('pronunciation.import')}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={disabled}
+              onClick={() => {
+                const entries = draft.lexicon
+                  .filter((row) => row.word.trim())
+                  .map((row) => ({ term: row.word, replacement: row.pronunciation }));
+                void saveLocalFile(
+                  new Blob([JSON.stringify({ entries }, null, 2)], { type: 'application/json' }),
+                  'audiobook-lexicon.json',
+                );
+              }}
+            >
+              <DownloadIcon />
+              {t('pronunciation.export')}
+            </Button>
+          </div>
+          <input
+            ref={lexiconFile}
+            hidden
+            type="file"
+            accept="application/json,.json"
+            aria-label={t('pronunciation.import')}
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              event.target.value = '';
+              if (!file || disabled) return;
+              setLexiconError('');
+              setLexiconNotice('');
+              void file.text().then(
+                (text) => {
+                  try {
+                    const incoming = lexiconRows(parsePronunciationImport(text));
+                    const next = replaceLexicon ? [] : draft.lexicon.map((row) => ({ ...row }));
+                    for (const row of incoming) {
+                      const key = row.word.toLowerCase();
+                      const index = next.findIndex(
+                        (item) => item.word.trim().toLowerCase() === key,
+                      );
+                      if (index >= 0) next[index] = row;
+                      else next.push(row);
+                    }
+                    onChange({ lexicon: next });
+                    setLexiconNotice(t('pronunciation.import_done', { count: incoming.length }));
+                  } catch (cause) {
+                    setLexiconError(
+                      cause instanceof SyntaxError
+                        ? describeError(cause)
+                        : t('pronunciation.import_error'),
+                    );
+                  }
+                },
+                (cause) => setLexiconError(describeError(cause) || t('pronunciation.import_error')),
+              );
+            }}
+          />
+          {lexiconError && (
+            <p role="alert" className="text-xs text-destructive">
+              {lexiconError}
+            </p>
+          )}
+          {lexiconNotice && (
+            <p role="status" className="text-xs text-muted-foreground">
+              {lexiconNotice}
+            </p>
+          )}
           {draft.lexicon.map((row, index) => (
             <div key={index} className="space-y-1">
               <Input

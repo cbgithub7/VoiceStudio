@@ -17,6 +17,7 @@ import { PipelineFailure } from '@/components/pipeline-failure';
 import { apiFetch, apiJson, describeError } from '@/lib/api/client';
 import { isImeComposing } from '@/lib/ime';
 import { saveLocalFile } from '@/lib/local-export';
+import { parsePronunciationImport } from './parse-pronunciation-import';
 import { SettingsRow, SettingsSection } from './settings-layout';
 
 type PronunciationType = 'respelling' | 'ipa' | 'cmu';
@@ -159,16 +160,12 @@ export function PronunciationSettings() {
     setError('');
     setNotice('');
     try {
-      const parsed = JSON.parse(await file.text()) as unknown;
-      const imported = Array.isArray(parsed)
-        ? parsed
-        : parsed && typeof parsed === 'object' && 'entries' in parsed
-          ? (parsed as { entries?: unknown }).entries
-          : null;
-      if (!Array.isArray(imported)) throw new Error(t('pronunciation.import_error'));
+      const imported = parsePronunciationImport(await file.text());
       await importEntries({ entries: imported } as ImportPayload, replaceAll);
     } catch (error) {
-      setError(describeError(error) || t('pronunciation.import_error'));
+      setError(
+        error instanceof SyntaxError ? describeError(error) : t('pronunciation.import_error'),
+      );
     }
   };
   const exportEntries = () =>
