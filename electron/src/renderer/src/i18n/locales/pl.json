@@ -280,7 +280,7 @@
     "backup_hint": "Pobierz słownik jako plik JSON lub zaimportuj wpisy z wcześniejszego eksportu.",
     "export": "Eksportuj JSON",
     "import": "Importuj JSON",
-    "import_replace_prompt": "Zastąpić {{count}} istniejących wpisów zaimportowanym plikiem? Wybierz Nie, aby dodać zaimportowane wpisy obok istniejących.",
+    "import_replace": "Zastąp istniejące wpisy",
     "import_done": "Zaimportowano {{count}} wpisów.",
     "import_error": "Nie udało się zaimportować pliku — oczekiwano JSON z eksportu wymowy.",
     "export_error": "Nie udało się wyeksportować słownika."

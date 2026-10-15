@@ -276,7 +276,7 @@
     "backup_hint": "Tải xuống từ điển dưới dạng tệp JSON, hoặc nhập các mục từ một lần xuất trước đó.",
     "export": "Xuất JSON",
     "import": "Nhập JSON",
-    "import_replace_prompt": "Thay thế {{count}} mục hiện có bằng tệp đã nhập? Chọn Không để thêm các mục đã nhập bên cạnh các mục hiện có.",
+    "import_replace": "Thay các mục hiện có",
     "import_done": "Đã nhập {{count}} mục.",
     "import_error": "Không thể nhập tệp đó — cần JSON từ một lần xuất phát âm.",
     "export_error": "Không thể xuất từ điển."

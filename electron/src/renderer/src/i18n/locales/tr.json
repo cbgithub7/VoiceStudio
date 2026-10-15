@@ -276,7 +276,7 @@
     "backup_hint": "Sözlüğü JSON dosyası olarak indirin veya önceki bir dışa aktarımdan girişleri içe aktarın.",
     "export": "JSON dışa aktar",
     "import": "JSON içe aktar",
-    "import_replace_prompt": "Mevcut {{count}} giriş içe aktarılan dosyayla değiştirilsin mi? İçe aktarılan girişleri mevcutların yanına eklemek için Hayır'ı seçin.",
+    "import_replace": "Mevcut girdileri değiştir",
     "import_done": "{{count}} giriş içe aktarıldı.",
     "import_error": "Bu dosya içe aktarılamadı — bir telaffuz dışa aktarımının JSON'u bekleniyordu.",
     "export_error": "Sözlük dışa aktarılamadı."

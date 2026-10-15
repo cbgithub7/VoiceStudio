@@ -276,7 +276,7 @@
     "backup_hint": "将词典下载为 JSON 文件，或从之前的导出中导入条目。",
     "export": "导出 JSON",
     "import": "导入 JSON",
-    "import_replace_prompt": "用导入的文件替换现有的 {{count}} 个条目？选择“否”则将导入的条目添加到现有条目旁边。",
+    "import_replace": "替换现有条目",
     "import_done": "已导入 {{count}} 个条目。",
     "import_error": "无法导入该文件 — 需要发音导出的 JSON。",
     "export_error": "无法导出词典。"
