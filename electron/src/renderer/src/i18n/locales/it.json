@@ -278,7 +278,7 @@
     "backup_hint": "Scarica il dizionario come file JSON oppure importa voci da un'esportazione precedente.",
     "export": "Esporta JSON",
     "import": "Importa JSON",
-    "import_replace_prompt": "Sostituire le {{count}} voci esistenti con il file importato? Scegli No per aggiungere le voci importate a quelle esistenti.",
+    "import_replace": "Sostituisci le voci esistenti",
     "import_done": "{{count}} voci importate.",
     "import_error": "Impossibile importare il file — è atteso il JSON di un'esportazione della pronuncia.",
     "export_error": "Impossibile esportare il dizionario."

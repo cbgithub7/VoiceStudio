@@ -276,7 +276,7 @@
     "backup_hint": "Unduh kamus sebagai file JSON, atau impor entri dari ekspor sebelumnya.",
     "export": "Ekspor JSON",
     "import": "Impor JSON",
-    "import_replace_prompt": "Ganti {{count}} entri yang ada dengan file yang diimpor? Pilih Tidak untuk menambahkan entri impor di samping yang ada.",
+    "import_replace": "Ganti entri yang ada",
     "import_done": "{{count}} entri diimpor.",
     "import_error": "File tidak dapat diimpor — diharapkan JSON dari ekspor pelafalan.",
     "export_error": "Kamus tidak dapat diekspor."

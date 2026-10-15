@@ -276,7 +276,7 @@
     "backup_hint": "Ladda ner ordboken som en JSON-fil, eller importera poster från en tidigare export.",
     "export": "Exportera JSON",
     "import": "Importera JSON",
-    "import_replace_prompt": "Ersätta de {{count}} befintliga posterna med den importerade filen? Välj Nej för att lägga till de importerade posterna bredvid de befintliga.",
+    "import_replace": "Ersätt befintliga poster",
     "import_done": "{{count}} poster importerade.",
     "import_error": "Kunde inte importera filen — JSON från en uttalsexport förväntades.",
     "export_error": "Kunde inte exportera ordboken."

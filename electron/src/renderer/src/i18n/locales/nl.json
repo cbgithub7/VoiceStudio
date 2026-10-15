@@ -276,7 +276,7 @@
     "backup_hint": "Download het woordenboek als JSON-bestand, of importeer vermeldingen uit een eerdere export.",
     "export": "JSON exporteren",
     "import": "JSON importeren",
-    "import_replace_prompt": "De {{count}} bestaande vermeldingen vervangen door het geïmporteerde bestand? Kies Nee om de geïmporteerde vermeldingen ernaast toe te voegen.",
+    "import_replace": "Bestaande items vervangen",
     "import_done": "{{count}} vermeldingen geïmporteerd.",
     "import_error": "Kan dat bestand niet importeren — JSON van een uitspraak-export verwacht.",
     "export_error": "Kan het woordenboek niet exporteren."

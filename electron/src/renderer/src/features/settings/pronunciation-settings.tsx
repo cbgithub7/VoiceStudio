@@ -57,8 +57,8 @@ export function PronunciationSettings() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const [replaceAll, setReplaceAll] = useState(false);
   const [previewRevision, setPreviewRevision] = useState(0);
-  const [pendingImport, setPendingImport] = useState<ImportPayload | null>(null);
   const entries = useQuery({
     queryKey: ['pronunciation'],
     queryFn: ({ signal }) => apiJson<PronunciationEntry[]>('/pronunciation', { signal }),
@@ -152,7 +152,6 @@ export function PronunciationSettings() {
         method: 'POST',
         body: JSON.stringify({ entries: payload.entries, replace }),
       });
-      setPendingImport(null);
       setNotice(t('pronunciation.import_done', { count: result.imported }));
       await refresh();
     });
@@ -166,12 +165,10 @@ export function PronunciationSettings() {
         : parsed && typeof parsed === 'object' && 'entries' in parsed
           ? (parsed as { entries?: unknown }).entries
           : null;
-      if (!Array.isArray(imported)) throw new Error('Invalid pronunciation export');
-      const payload = { entries: imported } as ImportPayload;
-      if (rows.length) setPendingImport(payload);
-      else void importEntries(payload, false);
-    } catch {
-      setError(t('pronunciation.import_error'));
+      if (!Array.isArray(imported)) throw new Error(t('pronunciation.import_error'));
+      await importEntries({ entries: imported } as ImportPayload, replaceAll);
+    } catch (error) {
+      setError(describeError(error) || t('pronunciation.import_error'));
     }
   };
   const exportEntries = () =>
@@ -375,6 +372,18 @@ export function PronunciationSettings() {
         title={t('pronunciation.backup_title')}
         description={t('pronunciation.backup_hint')}
       >
+        <div className="flex items-center gap-2">
+          <Switch
+            id="pronunciation-replace"
+            checked={replaceAll}
+            disabled={busy}
+            aria-label={t('pronunciation.import_replace')}
+            onCheckedChange={setReplaceAll}
+          />
+          <label htmlFor="pronunciation-replace" className="text-sm">
+            {t('pronunciation.import_replace')}
+          </label>
+        </div>
         <Button variant="outline" disabled={busy} onClick={() => void exportEntries()}>
           <DownloadIcon />
           {t('pronunciation.export')}
@@ -396,26 +405,6 @@ export function PronunciationSettings() {
           }}
         />
       </SettingsRow>
-      {pendingImport && (
-        <div className="flex flex-wrap items-center gap-2 px-4 py-3 text-sm">
-          <p className="min-w-0 flex-1">
-            {t('pronunciation.import_replace_prompt', { count: rows.length })}
-          </p>
-          <Button disabled={busy} onClick={() => void importEntries(pendingImport, true)}>
-            {t('common.yes')}
-          </Button>
-          <Button
-            variant="outline"
-            disabled={busy}
-            onClick={() => void importEntries(pendingImport, false)}
-          >
-            {t('common.no')}
-          </Button>
-          <Button variant="ghost" disabled={busy} onClick={() => setPendingImport(null)}>
-            {t('common.cancel')}
-          </Button>
-        </div>
-      )}
       {notice && (
         <p role="status" className="px-4 py-3 text-sm text-muted-foreground">
           {notice}

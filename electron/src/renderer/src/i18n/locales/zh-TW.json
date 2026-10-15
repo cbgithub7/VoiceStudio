@@ -276,7 +276,7 @@
     "backup_hint": "將字典下載為 JSON 檔案，或從先前的匯出中匯入條目。",
     "export": "匯出 JSON",
     "import": "匯入 JSON",
-    "import_replace_prompt": "用匯入的檔案取代現有的 {{count}} 個條目？選擇「否」則將匯入的條目新增到現有條目旁。",
+    "import_replace": "取代現有項目",
     "import_done": "已匯入 {{count}} 個條目。",
     "import_error": "無法匯入該檔案 — 需要發音匯出的 JSON。",
     "export_error": "無法匯出字典。"

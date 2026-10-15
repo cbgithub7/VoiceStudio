@@ -276,7 +276,7 @@
     "backup_hint": "Laden Sie das Wörterbuch als JSON-Datei herunter oder importieren Sie Einträge aus einem früheren Export.",
     "export": "JSON exportieren",
     "import": "JSON importieren",
-    "import_replace_prompt": "Die {{count}} vorhandenen Einträge durch die importierte Datei ersetzen? Wählen Sie Nein, um die importierten Einträge zusätzlich hinzuzufügen.",
+    "import_replace": "Vorhandene Einträge ersetzen",
     "import_done": "{{count}} Einträge importiert.",
     "import_error": "Diese Datei konnte nicht importiert werden — erwartet wird JSON aus einem Aussprache-Export.",
     "export_error": "Das Wörterbuch konnte nicht exportiert werden."

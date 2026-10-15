@@ -267,7 +267,7 @@
     "backup_hint": "Download the dictionary as a JSON file, or import entries from a previous export.",
     "export": "Export JSON",
     "import": "Import JSON",
-    "import_replace_prompt": "Replace the {{count}} existing entries with the imported file? Choose No to add the imported entries alongside them.",
+    "import_replace": "Replace existing entries",
     "import_done": "Imported {{count}} entries.",
     "import_error": "Couldn't import that file — expected JSON from a pronunciation export.",
     "export_error": "Couldn't export the dictionary."
