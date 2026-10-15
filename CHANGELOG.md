@@ -12,6 +12,10 @@ metadata and the backend fallback mirror it.
 
 - The open-source app no longer contains a licence-key client
 
+### Added
+
+- Import a pronunciation list from JSON in Settings or an audiobook's Pronunciation panel, with an option to replace the current entries (#1)
+
 ### Changed
 
 - The expanded sidebar shows the installed app version beneath VoiceStudio and clearly marks development builds (#2894)
